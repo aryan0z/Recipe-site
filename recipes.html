@@ -1,0 +1,220 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row =>
+                    row.some(cell => cell !== '' && cell !== null && cell !== undefined)
+                );
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Delight - Recipes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body class="smooth-scroll bg-cream font-sans">
+  <!-- Navbar -->
+  <nav class="navbar text-white p-4 sticky top-0 z-10 bg-green-700">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-3xl font-bold">Food Delight</a>
+      <div class="space-x-6">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="recipes.html" class="hover:underline">Recipes</a>
+        <a href="login.html" class="hover:underline">Login</a>
+        <a href="signup.html" class="hover:underline">Signup</a>
+      </div>
+    </nav>
+
+  <!-- Recipes Section -->
+  <section class="py-16">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-12 text-green-700">All Recipes</h2>
+      <!-- Search Bar -->
+      <div class="mb-12 flex justify-center">
+        <div class="relative w-full max-w-md">
+          <input type="text" id="searchInput" placeholder="Search for a dish..." class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 text-gray-700 bg-white">
+          <button onclick="searchRecipes()" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-md">
+            Search
+          </button>
+        </div>
+      </div>
+      <!-- Recipes Grid -->
+      <div id="recipeGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Paneer Tikka">
+          <img src="https://images.pexels.com/photos/20395267/pexels-photo-20395267/free-photo-of-a-dish-with-green-sauce-on-the-side.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Paneer Tikka" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Paneer Tikka</h3>
+            <p class="text-gray-600 mb-4">Marinated paneer cubes grilled to perfection.</p>
+            <a href="recipe-details.html?recipe=paneer-tikka" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Vegetable Pasta">
+          <img src="https://images.pexels.com/photos/6248844/pexels-photo-6248844.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Vegetable Pasta" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Vegetable Pasta</h3>
+            <p class="text-gray-600 mb-4">Creamy pasta with zucchini and mushrooms.</p>
+            <a href="recipe-details.html?recipe=vegetable-pasta" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Falafel Wrap">
+          <img src="https://images.pexels.com/photos/31631255/pexels-photo-31631255/free-photo-of-delicious-wraps-with-fresh-salad-on-plate.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Falafel Wrap" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Falafel Wrap</h3>
+            <p class="text-gray-600 mb-4">Crispy chickpea patties with tahini.</p>
+            <a href="recipe-details.html?recipe=falafel-wrap" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Dal Tadka">
+          <img src="https://images.pexels.com/photos/30203314/pexels-photo-30203314/free-photo-of-delicious-indian-dal-tadka-in-brass-bowl.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Dal Tadka" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Dal Tadka</h3>
+            <p class="text-gray-600 mb-4">Spiced Indian lentil curry.</p>
+            <a href="recipe-details.html?recipe=dal-tadka" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Margherita Pizza">
+          <img src="https://images.pexels.com/photos/10068752/pexels-photo-10068752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Margherita Pizza" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Margherita Pizza</h3>
+            <p class="text-gray-600 mb-4">Classic Italian pizza with fresh basil.</p>
+            <a href="recipe-details.html?recipe=margherita-pizza" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Hummus Plate">
+          <img src="https://images.pexels.com/photos/31599623/pexels-photo-31599623/free-photo-of-person-enjoying-fresh-hummus-with-bread-at-cafe.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Hummus Plate" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Hummus Plate</h3>
+            <p class="text-gray-600 mb-4">Creamy chickpea dip with veggies.</p>
+            <a href="recipe-details.html?recipe=hummus-plate" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Aloo Gobi">
+          <img src="https://media.istockphoto.com/id/450469817/photo/gobi-aloo-indian-curry-dish.jpg?s=1024x1024&w=is&k=20&c=eELxKgpaoL51-mmmNe7mcOaaFQc5eZEL66TTmzJwAUM=" alt="Aloo Gobi" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Aloo Gobi</h3>
+            <p class="text-gray-600 mb-4">Indian potato and cauliflower curry.</p>
+            <a href="recipe-details.html?recipe=aloo-gobi" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Mushroom Risotto">
+          <img src="https://media.istockphoto.com/id/1369183332/photo/risotto-with-brown-champignon-mushrooms.jpg?s=1024x1024&w=is&k=20&c=xRyu6oR1qIqaQbfJgDKuHa4q_Z4WeADLGmS7PC3UF_Q=" alt="Mushroom Risotto" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Mushroom Risotto</h3>
+            <p class="text-gray-600 mb-4">Creamy Italian rice dish.</p>
+            <a href="recipe-details.html?recipe=mushroom-risotto" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Greek Salad">
+          <img src="https://media.istockphoto.com/id/1461256163/photo/feta-cheese-salad-on-wooden-table.jpg?s=1024x1024&w=is&k=20&c=TyTysWp-pUkObnKSdS4V-EvLhGtFmZVk6iV9ODj8gEU=" alt="Greek Salad" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Greek Salad</h3>
+            <p class="text-gray-600 mb-4">Fresh veggies with feta and olives.</p>
+            <a href="recipe-details.html?recipe=greek-salad" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Chole Masala">
+          <img src="https://media.istockphoto.com/id/669466116/photo/spicy-chick-peas-curry-or-chola-masala-or-chana-masala-or-chole-bhature-or-choley-garnished.jpg?s=1024x1024&w=is&k=20&c=KHYzsvWoyNFWL8XLFYflP1o7eHtx7i7zPVBjBKKy_KM=" alt="Chole Masala" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Chole Masala</h3>
+            <p class="text-gray-600 mb-4">Spicy Indian chickpea curry.</p>
+            <a href="recipe-details.html?recipe=chole-masala" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Tomato Bruschetta">
+          <img src="https://media.istockphoto.com/id/1181611076/photo/homemade-italian-bruschetta-on-rustic-wooden-table.jpg?s=1024x1024&w=is&k=20&c=q5VL1-Xp9BwU9_UmNqUb_1jDxzNteKLLkAan4puvM4A=" alt="Tomato Bruschetta" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Tomato Bruschetta</h3>
+            <p class="text-gray-600 mb-4">Italian toasted bread with tomato topping.</p>
+            <a href="recipe-details.html?recipe=tomato-bruschetta" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden" data-name="Quinoa Salad">
+          <img src="https://media.istockphoto.com/id/638197896/photo/healthy-organic-quinoa-tabouli-salad.jpg?s=1024x1024&w=is&k=20&c=YNtiz2og4gtw50uqRuReCMV8lz8IZyeH2Sq8QFN6BWc=" alt="Quinoa Salad" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-green-700">Quinoa Salad</h3>
+            <p class="text-gray-600 mb-4">Healthy salad with quinoa and veggies.</p>
+            <a href="recipe-details.html?recipe=quinoa-salad" class="text-yellow-600 hover:text-yellow-700">View Recipe</a>
+          </div>
+        </div>
+      </div>
+      <!-- Coming Soon Message -->
+      <div id="noResults" class="hidden text-center mt-12">
+        <h3 class="text-3xl font-bold text-gray-700 mb-4">Coming Soon!</h3>
+        <p class="text-gray-600 mb-6">We couldn't find that dish, but we're always adding new recipes. Check back soon!</p>
+        <img src="https://images.pexels.com/photos/1351238/pexels-photo-1351238.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Coming Soon" class="mx-auto w-64 h-64 object-cover rounded-lg shadow-lg">
+        <a href="recipes.html" class="btn-primary mt-6 inline-block">Back to All Recipes</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function searchRecipes() {
+      const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
+      const recipeCards = document.querySelectorAll('.recipe-card');
+      const recipeGrid = document.getElementById('recipeGrid');
+      const noResults = document.getElementById('noResults');
+      let hasMatches = false;
+
+      recipeCards.forEach(card => {
+        const recipeName = card.getAttribute('data-name').toLowerCase();
+        if (searchInput === '' || recipeName.includes(searchInput)) {
+          card.style.display = 'block';
+          hasMatches = true;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (hasMatches || searchInput === '') {
+        recipeGrid.style.display = 'grid';
+        noResults.classList.add('hidden');
+      } else {
+        recipeGrid.style.display = 'none';
+        noResults.classList.remove('hidden');
+      }
+    }
+
+    // Allow search on Enter key press
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchRecipes();
+      }
+    });
+
+    // Handle search query from URL on page load
+    window.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchQuery = urlParams.get('search');
+      if (searchQuery) {
+        document.getElementById('searchInput').value = searchQuery;
+        searchRecipes();
+      }
+    });
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'931d7c5f4f07bae6',t:'MTc0NDkwOTMwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

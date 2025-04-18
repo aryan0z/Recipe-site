@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@400;600&display=swap');
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #F5F5DC; /* Warm beige */
+  color: #333;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Lora', serif;
+  color: #2F4F4F; /* Forest green */
+}
+
+.navbar {
+  background-color: #2F4F4F;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #DAA520; /* Mustard yellow */
+  transform: scale(1.05);
+}
+
+.hero-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://source.unsplash.com/random/1600x900/?food');
+  background-size: cover;
+  background-position: center;
+  color: #FFFDD0; /* Soft cream */
+}
+
+.recipe-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.recipe-card img {
+  border-radius: 0.5rem;
+}
+
+.btn-primary {
+  background-color: #DAA520;
+  color: #FFFDD0;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #B8860B;
+  transform: scale(1.05);
+}
+
+.footer {
+  background-color: #2F4F4F;
+  color: #FFFDD0;
+}
+
+.footer a {
+  color: #DAA520;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #FFFDD0;
+}
+
+.quote-generator {
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+#quote-text {
+  font-style: italic;
+  color: #FFFDD0;
+}
+
+.smooth-scroll {
+  scroll-behavior: smooth;
+}

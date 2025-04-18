@@ -1,0 +1,169 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Delight - Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body class="smooth-scroll">
+  <!-- Navbar -->
+  <nav class="navbar text-white p-4 sticky top-0 z-10">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-3xl font-bold">Food Delight</a>
+      <div class="flex items-center space-x-6">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="recipes.html" class="hover:underline">Recipes</a>
+        <a href="favorites.html" class="hover:underline">Favorites</a>
+        <a href="login.html" class="hover:underline">Login</a>
+        <a href="signup.html" class="hover:underline">Signup</a>
+        <div class="relative">
+          <input type="text" id="navbarSearchInput" placeholder="Search" class="p-2 border rounded-2xl text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600 w-40 md:w-48 bg-white">
+          <button onclick="searchRecipes()" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-green-600 to-green-700 text-white px-3 py-1 rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-md">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section py-24 text-center">
+    <div class="container mx-auto">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">Delicious Recipes for Every Taste</h1>
+      <p class="text-xl mb-8">Explore a variety of dishes from around the world to satisfy your cravings!</p>
+      <a href="recipes.html" class="btn-primary">Explore Recipes</a>
+    </div>
+  </section>
+
+  <!-- Featured Recipes -->
+  <section class="py-16">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-12">Featured Recipes</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden">
+          <img src="https://images.pexels.com/photos/20395267/pexels-photo-20395267/free-photo-of-a-dish-with-green-sauce-on-the-side.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Paneer Tikka" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold">Paneer Tikka</h3>
+            <p class="text-gray-600 mb-4">Spicy Indian grilled paneer skewers.</p>
+            <a href="recipe-details.html?recipe=paneer-tikka" class="text-green-600 hover:underline">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden">
+          <img src="https://images.pexels.com/photos/6248844/pexels-photo-6248844.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Vegetable Pasta" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold">Vegetable Pasta</h3>
+            <p class="text-gray-600 mb-4">Creamy Italian pasta with fresh veggies.</p>
+            <a href="recipe-details.html?recipe=vegetable-pasta" class="text-green-600 hover:underline">View Recipe</a>
+          </div>
+        </div>
+        <div class="recipe-card bg-white rounded-lg shadow-lg overflow-hidden">
+          <img src="https://images.pexels.com/photos/31631255/pexels-photo-31631255/free-photo-of-delicious-wraps-with-fresh-salad-on-plate.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Falafel Wrap" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold">Falafel Wrap</h3>
+            <p class="text-gray-600 mb-4">Middle Eastern chickpea patties in a wrap.</p>
+            <a href="recipe-details.html?recipe=falafel-wrap" class="text-green-600 hover:underline">View Recipe</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer py-8">
+    <div class="container mx-auto text-center">
+      <div class="quote-generator">
+        <h3 class="text-xl font-semibold mb-4">Food Quote of the Day</h3>
+        <p id="quote-text">"Food is our common ground, a universal experience." – James Beard</p>
+        <button onclick="generateQuote()" class="btn-primary mt-4">New Quote</button>
+      </div>
+      <p class="mt-6">© 2025 Food Delight. All rights reserved.</p>
+    </div>
+  </footer>
+  <script>
+    const quotes = [
+      "Food is our common ground, a universal experience. – James Beard",
+      "Cooking is like love. It should be entered into with abandon or not at all. – Harriet Van Horne",
+      "One cannot think well, love well, sleep well, if one has not dined well. – Virginia Woolf",
+      "The secret of success in life is to eat what you like and let the food fight it out inside. – Mark Twain",
+      "Life is a combination of magic and pasta. – Federico Fellini",
+      "Good food is the foundation of genuine happiness. – Auguste Escoffier"
+    ];
+    function generateQuote() {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      document.getElementById('quote-text').textContent = quotes[randomIndex];
+    }
+
+    function searchRecipes() {
+      const searchQuery = document.getElementById('navbarSearchInput').value.trim().toLowerCase();
+      const recipes = {
+        'paneer tikka': 'paneer-tikka',
+        'vegetable pasta': 'vegetable-pasta',
+        'falafel wrap': 'falafel-wrap',
+        'dal tadka': 'dal-tadka',
+        'margherita pizza': 'margherita-pizza',
+        'hummus plate': 'hummus-plate',
+        'aloo gobi': 'aloo-gobi',
+        'mushroom risotto': 'mushroom-risotto',
+        'greek salad': 'greek-salad',
+        'chole masala': 'chole-masala',
+        'tomato bruschetta': 'tomato-bruschetta',
+        'quinoa salad': 'quinoa-salad'
+      };
+
+      const recipeId = Object.keys(recipes).find(key => key.toLowerCase() === searchQuery);
+      if (recipeId) {
+        window.location.href = `recipe-details.html?recipe=${recipes[recipeId]}`;
+      } else {
+        window.location.href = `recipes.html?search=${encodeURIComponent(searchQuery)}`;
+      }
+    }
+
+    document.getElementById('navbarSearchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchRecipes();
+      }
+    });
+  </script>
+</body>
+</html>
