@@ -44,443 +44,890 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Food Delight - Recipe Details</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+    }
+    .navbar {
+      background: rgba(26, 26, 26, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .nav-link {
+      position: relative;
+      padding: 0.5rem 0;
+      margin: 0 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(to right, #e65c00, #f9d423);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-brand {
+      position: relative;
+      font-weight: 600;
+      background: linear-gradient(to right, #fff, #f9d423);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transition: all 0.3s ease;
+    }
+    .nav-brand:hover {
+      transform: translateY(-1px);
+      text-shadow: 0 10px 20px rgba(249, 212, 35, 0.2);
+    }
+    .recipe-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .recipe-image {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    .recipe-info {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .ingredient-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    .ingredient-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    .step-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    .step-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    .step-number {
+      background: linear-gradient(to right, #e65c00, #f9d423);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .favorite-btn {
+      background: linear-gradient(to right, #e65c00, #f9d423);
+      transition: all 0.3s ease;
+    }
+    .favorite-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(230, 92, 0, 0.3);
+    }
+    .footer {
+      background: rgba(26, 26, 26, 0.95);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    .recipe-tag {
+      background: linear-gradient(to right, #e65c00, #f9d423);
+      font-size: 0.8rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    .recipe-tag:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(230, 92, 0, 0.2);
+    }
+    .recipe-stat {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  </style>
 </head>
-<body class="bg-cream font-sans">
+<body class="min-h-screen flex flex-col">
   <!-- Navbar -->
-  <nav class="navbar text-white p-4 sticky top-0 z-10 bg-green-700">
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-3xl font-bold">Food Delight</a>
-      <div class="space-x-6">
-        <a href="index.html" class="hover:underline">Home</a>
-        <a href="recipes.html" class="hover:underline">Recipes</a>
-        <a href="favorites.html" class="hover:underline">Favorites</a>
-        <a href="login.html" class="hover:underline">Login</a>
-        <a href="signup.html" class="hover:underline">Signup</a>
+  <nav class="navbar text-white p-4 sticky top-0 z-10">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <a href="index.html" class="nav-brand text-2xl">Food Delight</a>
+      <div class="flex items-center space-x-2">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="recipes.html" class="nav-link active">Recipes</a>
+        <a href="favorites.html" class="nav-link">Favorites</a>
+        <div class="h-4 w-px bg-gradient-to-b from-transparent via-gray-400 to-transparent mx-4"></div>
+        <a href="login.html" class="nav-link">Login</a>
+        <a href="signup.html" class="px-6 py-2 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full text-sm font-medium hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300 hover:-translate-y-0.5">Sign Up</a>
       </div>
-    </nav>
+    </div>
+  </nav>
 
   <!-- Recipe Details Section -->
-  <section class="py-12">
+  <section class="py-16 flex-grow">
     <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center mb-4">
-        <a href="recipes.html" class="text-yellow-600 hover:text-yellow-700 text-lg">&lt; Back to Recipes</a>
-        <button id="favoriteBtn" class="text-yellow-600 hover:text-yellow-700 text-lg flex items-center">
-          <svg id="favoriteIcon" class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-          <span id="favoriteText">Add to Favorites</span>
-        </button>
-      </div>
+      <div class="recipe-container rounded-xl p-8">
+        <!-- Recipe Header -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          <!-- Image Section -->
+          <div class="relative">
+            <img src="https://images.pexels.com/photos/20395267/pexels-photo-20395267/free-photo-of-a-dish-with-green-sauce-on-the-side.jpeg" alt="Paneer Tikka" class="recipe-image w-full h-[400px] object-cover rounded-xl">
+            <div class="absolute top-4 right-4 flex gap-2">
+              <span class="recipe-tag">Vegetarian</span>
+              <span class="recipe-tag">Indian</span>
+            </div>
+          </div>
+          
+          <!-- Recipe Info -->
+          <div class="flex flex-col justify-between">
+            <div>
+              <h1 class="text-4xl font-bold mb-4">
+                <span class="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">Paneer Tikka</span>
+              </h1>
+              <p class="text-gray-400 mb-6">A popular Indian appetizer where cubes of paneer (Indian cottage cheese) are marinated in spiced yogurt and grilled to perfection. Served with mint chutney and onion rings.</p>
+              
+              <!-- Recipe Stats -->
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="recipe-stat">
+                  <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  <span class="text-sm">Prep: 30 mins</span>
+                </div>
+                <div class="recipe-stat">
+                  <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                  </svg>
+                  <span class="text-sm">Serves: 4</span>
+                </div>
+                <div class="recipe-stat">
+                  <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                  </svg>
+                  <span class="text-sm">Cost: ₹250</span>
+                </div>
+                <div class="recipe-stat">
+                  <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                  </svg>
+                  <span class="text-sm">4.8/5.0</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex gap-4">
+              <button id="favoriteBtn" class="favorite-btn flex-1 py-3 px-6 rounded-lg text-white font-medium flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                </svg>
+                <span>Add to Favorites</span>
+              </button>
+              <button id="shareBtn" class="share-btn py-3 px-6 rounded-lg text-white font-medium flex items-center justify-center bg-gradient-to-r from-orange-400 to-yellow-400 hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
 
-      <!-- Recipe Header -->
-      <div class="relative mb-8" id="recipeHeader"></div>
+        <!-- Ingredients and Instructions -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Ingredients -->
+          <div class="lg:col-span-1">
+            <h2 class="text-2xl font-semibold mb-6">
+              <span class="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">Ingredients</span>
+            </h2>
+            <ul class="space-y-4">
+              <li class="ingredient-item p-4 rounded-lg flex items-start gap-3">
+                <input type="checkbox" class="mt-1">
+                <span>400g paneer, cut into 1-inch cubes</span>
+              </li>
+              <li class="ingredient-item p-4 rounded-lg flex items-start gap-3">
+                <input type="checkbox" class="mt-1">
+                <span>1 cup thick yogurt</span>
+              </li>
+              <li class="ingredient-item p-4 rounded-lg flex items-start gap-3">
+                <input type="checkbox" class="mt-1">
+                <span>2 tbsp ginger-garlic paste</span>
+              </li>
+              <li class="ingredient-item p-4 rounded-lg flex items-start gap-3">
+                <input type="checkbox" class="mt-1">
+                <span>2 tbsp tandoori masala</span>
+              </li>
+              <li class="ingredient-item p-4 rounded-lg flex items-start gap-3">
+                <input type="checkbox" class="mt-1">
+                <span>1 tsp red chili powder</span>
+              </li>
+              <li class="ingredient-item p-4 rounded-lg flex items-start gap-3">
+                <input type="checkbox" class="mt-1">
+                <span>1 tsp garam masala</span>
+              </li>
+              <li class="ingredient-item p-4 rounded-lg flex items-start gap-3">
+                <input type="checkbox" class="mt-1">
+                <span>Salt to taste</span>
+              </li>
+              <li class="ingredient-item p-4 rounded-lg flex items-start gap-3">
+                <input type="checkbox" class="mt-1">
+                <span>2 tbsp oil</span>
+              </li>
+            </ul>
+          </div>
 
-      <!-- Recipe Metadata -->
-      <div class="flex justify-between items-center mb-8 bg-white p-4 rounded-lg shadow-md" id="recipeMetadata"></div>
-
-      <!-- Ingredients and Instructions -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="bg-white p-6 rounded-lg shadow-md" id="ingredientsList"></div>
-        <div class="bg-white p-6 rounded-lg shadow-md" id="instructionsList"></div>
+          <!-- Instructions -->
+          <div class="lg:col-span-2">
+            <h2 class="text-2xl font-semibold mb-6">
+              <span class="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">Instructions</span>
+            </h2>
+            <div class="space-y-6">
+              <div class="step-card p-6 rounded-lg">
+                <div class="flex items-start gap-4">
+                  <span class="step-number text-4xl font-bold">1</span>
+                  <p class="text-gray-300">In a large bowl, mix yogurt with ginger-garlic paste, tandoori masala, red chili powder, garam masala, and salt to make the marinade.</p>
+                </div>
+              </div>
+              <div class="step-card p-6 rounded-lg">
+                <div class="flex items-start gap-4">
+                  <span class="step-number text-4xl font-bold">2</span>
+                  <p class="text-gray-300">Add paneer cubes to the marinade and gently coat them evenly. Let it marinate for at least 2 hours or overnight in the refrigerator.</p>
+                </div>
+              </div>
+              <div class="step-card p-6 rounded-lg">
+                <div class="flex items-start gap-4">
+                  <span class="step-number text-4xl font-bold">3</span>
+                  <p class="text-gray-300">Preheat your grill or oven to 200°C (400°F). Thread the marinated paneer onto skewers.</p>
+                </div>
+              </div>
+              <div class="step-card p-6 rounded-lg">
+                <div class="flex items-start gap-4">
+                  <span class="step-number text-4xl font-bold">4</span>
+                  <p class="text-gray-300">Brush the paneer with oil and grill for 5-6 minutes on each side until slightly charred and heated through.</p>
+                </div>
+              </div>
+              <div class="step-card p-6 rounded-lg">
+                <div class="flex items-start gap-4">
+                  <span class="step-number text-4xl font-bold">5</span>
+                  <p class="text-gray-300">Serve hot with mint chutney, sliced onions, and lemon wedges. Garnish with fresh coriander leaves.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="footer py-8 bg-green-700 text-white">
+  <footer class="footer py-8">
     <div class="container mx-auto text-center">
-      <p>© 2025 Food Delight. All rights reserved.</p>
+      <p class="text-gray-400">© 2025 Food Delight. All rights reserved.</p>
     </div>
   </footer>
 
   <script>
-    let timer;
-    let timeLeft = 30 * 60;
-
+    // Recipe data object
     const recipes = {
       'paneer-tikka': {
         name: 'Paneer Tikka',
-        description: 'Juicy, spiced paneer cubes grilled to perfection with a smoky flavor.',
-        image: 'https://images.pexels.com/photos/20395267/pexels-photo-20395267/free-photo-of-a-dish-with-green-sauce-on-the-side.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        meal: 'Dinner',
-        cookTime: '30 min',
+        description: 'A popular Indian appetizer where cubes of paneer (Indian cottage cheese) are marinated in spiced yogurt and grilled to perfection. Served with mint chutney and onion rings.',
+        image: 'https://images.pexels.com/photos/20395267/pexels-photo-20395267/free-photo-of-a-dish-with-green-sauce-on-the-side.jpeg',
+        tags: ['Vegetarian', 'Indian'],
+        prepTime: '30 mins',
         servings: 4,
+        cost: '₹250',
+        rating: '4.8/5.0',
         ingredients: [
-          '400g paneer, cubed',
-          '1 cup yogurt',
+          '400g paneer, cut into 1-inch cubes',
+          '1 cup thick yogurt',
           '2 tbsp ginger-garlic paste',
-          '1 tbsp tandoori masala',
-          '1 tsp turmeric powder',
-          'Salt and pepper to taste',
-          '2 tbsp oil',
-          'Fresh cilantro for garnish'
+          '2 tbsp tandoori masala',
+          '1 tsp red chili powder',
+          '1 tsp garam masala',
+          'Salt to taste',
+          '2 tbsp oil'
         ],
         instructions: [
-          'Marinate the paneer cubes with yogurt, ginger-garlic paste, tandoori masala, turmeric, salt, and pepper for 30 minutes.',
-          'Preheat a grill or skillet with oil over medium heat.',
-          'Thread the marinated paneer onto skewers and grill for 10-15 minutes, turning occasionally, until charred and cooked.',
-          'Remove from heat and garnish with fresh cilantro.',
-          'Serve hot with mint chutney or naan.'
+          'In a large bowl, mix yogurt with ginger-garlic paste, tandoori masala, red chili powder, garam masala, and salt to make the marinade.',
+          'Add paneer cubes to the marinade and gently coat them evenly. Let it marinate for at least 2 hours or overnight in the refrigerator.',
+          'Preheat your grill or oven to 200°C (400°F). Thread the marinated paneer onto skewers.',
+          'Brush the paneer with oil and grill for 5-6 minutes on each side until slightly charred and heated through.',
+          'Serve hot with mint chutney, sliced onions, and lemon wedges. Garnish with fresh coriander leaves.'
         ]
       },
       'vegetable-pasta': {
         name: 'Vegetable Pasta',
-        description: 'Creamy Italian pasta with fresh veggies.',
-        image: 'https://images.pexels.com/photos/6248844/pexels-photo-6248844.jpeg?auto=compress&cs=tinysrgb&w=600',
-        meal: 'Lunch',
-        cookTime: '20 min',
+        description: 'Creamy Italian pasta loaded with fresh vegetables and herbs, tossed in a rich sauce.',
+        image: 'https://images.pexels.com/photos/6248844/pexels-photo-6248844.jpeg',
+        tags: ['Vegetarian', 'Italian'],
+        prepTime: '20 mins',
         servings: 3,
+        cost: '₹180',
+        rating: '4.7/5.0',
         ingredients: [
           '200g pasta',
-          '1 cup broccoli',
-          '1 cup zucchini',
+          '1 cup broccoli florets',
+          '1 cup sliced zucchini',
           '1/2 cup cream',
           '2 tbsp olive oil',
+          '3 cloves garlic, minced',
           'Salt and pepper to taste',
-          'Grated parmesan'
+          'Grated parmesan cheese'
         ],
         instructions: [
-          'Cook pasta according to package instructions.',
-          'Sauté broccoli and zucchini in olive oil.',
-          'Add cream and season with salt and pepper.',
-          'Mix in cooked pasta and top with parmesan.',
-          'Serve warm.'
+          'Cook pasta according to package instructions until al dente.',
+          'In a large pan, heat olive oil and sauté minced garlic until fragrant.',
+          'Add broccoli and zucchini, cook until tender-crisp.',
+          'Add cream, salt, and pepper. Simmer for 2-3 minutes.',
+          'Toss cooked pasta in the sauce and vegetables.',
+          'Serve hot with grated parmesan cheese on top.'
         ]
       },
       'falafel-wrap': {
         name: 'Falafel Wrap',
-        description: 'Middle Eastern chickpea patties in a wrap.',
-        image: 'https://images.pexels.com/photos/31631255/pexels-photo-31631255/free-photo-of-delicious-wraps-with-fresh-salad-on-plate.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        meal: 'Dinner',
-        cookTime: '25 min',
+        description: 'Middle Eastern chickpea patties wrapped in warm pita with fresh vegetables and tahini sauce.',
+        image: 'https://images.pexels.com/photos/31631255/pexels-photo-31631255/free-photo-of-delicious-wraps-with-fresh-salad-on-plate.jpeg',
+        tags: ['Vegetarian', 'Middle Eastern'],
+        prepTime: '25 mins',
         servings: 2,
+        cost: '₹200',
+        rating: '4.6/5.0',
         ingredients: [
-          '1 cup chickpeas (soaked)',
-          '1/2 onion',
-          '2 garlic cloves',
-          '1 tsp cumin',
+          '1 cup chickpeas (soaked overnight)',
+          '1/2 onion, finely chopped',
+          '2 garlic cloves, minced',
+          '1 tsp cumin powder',
+          'Fresh parsley and cilantro',
           'Salt to taste',
-          '2 wraps',
+          '2 pita breads',
           'Tahini sauce'
         ],
         instructions: [
-          'Blend chickpeas, onion, garlic, cumin, and salt into a paste.',
-          'Form into patties and fry until golden.',
-          'Place in wraps with tahini sauce.',
-          'Serve with fresh veggies.'
+          'Blend chickpeas, onion, garlic, herbs, and spices into a coarse paste.',
+          'Form small patties and refrigerate for 30 minutes.',
+          'Deep fry the patties until golden brown.',
+          'Warm the pita breads and fill with falafels.',
+          'Add fresh vegetables and drizzle with tahini sauce.'
         ]
       },
       'dal-tadka': {
         name: 'Dal Tadka',
-        description: 'Spiced Indian lentil curry.',
-        image: 'https://images.pexels.com/photos/30203314/pexels-photo-30203314/free-photo-of-delicious-indian-dal-tadka-in-brass-bowl.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        meal: 'Dinner',
-        cookTime: '40 min',
+        description: 'Classic Indian lentil curry tempered with spices and ghee.',
+        image: 'https://images.pexels.com/photos/30203314/pexels-photo-30203314/free-photo-of-delicious-indian-dal-tadka-in-brass-bowl.jpeg',
+        tags: ['Vegetarian', 'Indian'],
+        prepTime: '40 mins',
         servings: 4,
+        cost: '₹150',
+        rating: '4.8/5.0',
         ingredients: [
-          '1 cup lentils',
-          '1 onion',
-          '2 tomatoes',
+          '1 cup yellow lentils (toor dal)',
+          '1 onion, finely chopped',
+          '2 tomatoes, chopped',
           '1 tbsp ginger-garlic paste',
-          '1 tsp turmeric',
+          '1 tsp turmeric powder',
           '2 tbsp ghee',
-          'Cilantro'
+          'Cumin seeds, curry leaves',
+          'Fresh cilantro for garnish'
         ],
         instructions: [
-          'Cook lentils with turmeric until soft.',
-          'Sauté onion, tomatoes, and ginger-garlic paste in ghee.',
-          'Add cooked lentils and simmer.',
-          'Garnish with cilantro and serve.'
+          'Wash lentils and cook with turmeric until soft and mushy.',
+          'In a pan, heat ghee and add cumin seeds and curry leaves.',
+          'Add onions and sauté until golden brown.',
+          'Add ginger-garlic paste and tomatoes, cook until soft.',
+          'Add cooked dal and simmer for 5-10 minutes.',
+          'Garnish with fresh cilantro and serve hot.'
         ]
       },
       'margherita-pizza': {
         name: 'Margherita Pizza',
-        description: 'A simple yet delicious Italian classic with fresh mozzarella, tomatoes, and basil.',
-        image: 'https://images.pexels.com/photos/10068752/pexels-photo-10068752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        meal: 'Dinner',
-        cookTime: '15 min',
+        description: 'Classic Italian pizza with fresh mozzarella, tomatoes, and basil.',
+        image: 'https://images.pexels.com/photos/10068752/pexels-photo-10068752.jpeg',
+        tags: ['Vegetarian', 'Italian'],
+        prepTime: '15 mins',
         servings: 4,
+        cost: '₹300',
+        rating: '4.9/5.0',
         ingredients: [
           '1 pizza dough',
           '1/4 cup tomato sauce',
-          '8 oz mozzarella, sliced',
-          '1 large tomato, sliced',
+          '8 oz fresh mozzarella',
           'Fresh basil leaves',
           '2 tbsp olive oil',
           'Salt and pepper to taste'
         ],
         instructions: [
           'Preheat oven to 475°F (245°C).',
-          'Roll out the pizza dough on a floured surface.',
-          'Spread tomato sauce evenly over the dough.',
-          'Arrange mozzarella and tomato slices on top.',
+          'Roll out pizza dough and spread tomato sauce.',
+          'Top with sliced mozzarella.',
           'Bake for 12-15 minutes until crust is golden.',
-          'Remove from oven and top with fresh basil leaves.',
-          'Drizzle with olive oil, season with salt and pepper.',
-          'Slice and serve immediately.'
+          'Garnish with fresh basil and drizzle with olive oil.'
         ]
       },
       'hummus-plate': {
         name: 'Hummus Plate',
-        description: 'Creamy chickpea dip with veggies.',
-        image: 'https://images.pexels.com/photos/31599623/pexels-photo-31599623/free-photo-of-person-enjoying-fresh-hummus-with-bread-at-cafe.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        meal: 'Snack',
-        cookTime: '10 min',
-        servings: 2,
+        description: 'Creamy chickpea dip served with fresh vegetables and pita bread.',
+        image: 'https://images.pexels.com/photos/31599623/pexels-photo-31599623/free-photo-of-person-enjoying-fresh-hummus-with-bread-at-cafe.jpeg',
+        tags: ['Vegetarian', 'Middle Eastern'],
+        prepTime: '10 mins',
+        servings: 4,
+        cost: '₹220',
+        rating: '4.7/5.0',
         ingredients: [
-          '1 cup chickpeas',
-          '2 tbsp tahini',
-          '1 garlic clove',
-          '2 tbsp lemon juice',
-          'Olive oil',
-          'Veggies (carrots, cucumber)'
+          '2 cups cooked chickpeas',
+          '1/4 cup tahini',
+          '2 cloves garlic',
+          'Juice of 1 lemon',
+          '1/4 cup olive oil',
+          'Salt to taste',
+          'Paprika for garnish',
+          'Pita bread and vegetables for serving'
         ],
         instructions: [
-          'Blend chickpeas, tahini, garlic, and lemon juice.',
-          'Add olive oil until smooth.',
-          'Serve with fresh veggies.'
+          'Blend chickpeas, tahini, garlic, and lemon juice until smooth.',
+          'Gradually add olive oil while blending.',
+          'Season with salt to taste.',
+          'Transfer to a serving bowl and drizzle with olive oil.',
+          'Sprinkle paprika and serve with pita and vegetables.'
         ]
       },
       'aloo-gobi': {
         name: 'Aloo Gobi',
-        description: 'Indian potato and cauliflower curry.',
-        image: 'https://media.istockphoto.com/id/450469817/photo/gobi-aloo-indian-curry-dish.jpg?s=1024x1024&w=is&k=20&c=eELxKgpaoL51-mmmNe7mcOaaFQc5eZEL66TTmzJwAUM=',
-        meal: 'Dinner',
-        cookTime: '35 min',
+        description: 'Indian spiced potato and cauliflower curry.',
+        image: 'https://media.istockphoto.com/id/450469817/photo/gobi-aloo-indian-curry-dish.jpg',
+        tags: ['Vegetarian', 'Indian'],
+        prepTime: '35 mins',
         servings: 4,
+        cost: '₹160',
+        rating: '4.6/5.0',
         ingredients: [
-          '2 potatoes',
-          '1 cauliflower',
-          '1 onion',
+          '2 potatoes, cubed',
+          '1 cauliflower, cut into florets',
+          '1 onion, chopped',
+          '2 tomatoes, chopped',
           '1 tsp cumin seeds',
-          '1 tbsp turmeric',
-          'Salt to taste',
-          '2 tbsp oil'
+          '1 tsp turmeric powder',
+          'Garam masala',
+          'Oil and salt to taste'
         ],
         instructions: [
-          'Chop potatoes and cauliflower.',
-          'Sauté onion and cumin seeds in oil.',
-          'Add potatoes, cauliflower, turmeric, and salt.',
-          'Cook until tender, about 30 minutes.'
-        ]
-      },
-      'mushroom-risotto': {
-        name: 'Mushroom Risotto',
-        description: 'Creamy Italian rice dish.',
-        image: 'https://media.istockphoto.com/id/1369183332/photo/risotto-with-brown-champignon-mushrooms.jpg?s=1024x1024&w=is&k=20&c=xRyu6oR1qIqaQbfJgDKuHa4q_Z4WeADLGmS7PC3UF_Q=',
-        meal: 'Dinner',
-        cookTime: '40 min',
-        servings: 3,
-        ingredients: [
-          '1 cup Arborio rice',
-          '2 cups mushrooms',
-          '1 onion',
-          '2 tbsp butter',
-          '4 cups broth',
-          'Parmesan cheese'
-        ],
-        instructions: [
-          'Sauté mushrooms and onion in butter.',
-          'Add rice and stir for 2 minutes.',
-          'Gradually add broth, stirring until absorbed.',
-          'Finish with parmesan and serve.'
-        ]
-      },
-      'greek-salad': {
-        name: 'Greek Salad',
-        description: 'Fresh veggies with feta and olives.',
-        image: 'https://media.istockphoto.com/id/1461256163/photo/feta-cheese-salad-on-wooden-table.jpg?s=1024x1024&w=is&k=20&c=TyTysWp-pUkObnKSdS4V-EvLhGtFmZVk6iV9ODj8gEU=',
-        meal: 'Lunch',
-        cookTime: '10 min',
-        servings: 2,
-        ingredients: [
-          '1 cucumber',
-          '1 tomato',
-          '1/2 red onion',
-          '1/2 cup feta',
-          '10 olives',
-          '2 tbsp olive oil',
-          'Lemon juice'
-        ],
-        instructions: [
-          'Chop cucumber, tomato, and onion.',
-          'Mix with feta and olives.',
-          'Drizzle with olive oil and lemon juice.',
-          'Serve fresh.'
-        ]
-      },
-      'chole-masala': {
-        name: 'Chole Masala',
-        description: 'Spicy Indian chickpea curry.',
-        image: 'https://media.istockphoto.com/id/669466116/photo/spicy-chick-peas-curry-or-chola-masala-or-chana-masala-or-chole-bhature-or-choley-garnished.jpg?s=1024x1024&w=is&k=20&c=KHYzsvWoyNFWL8XLFYflP1o7eHtx7i7zPVBjBKKy_KM=',
-        meal: 'Dinner',
-        cookTime: '40 min',
-        servings: 4,
-        ingredients: [
-          '2 cups chickpeas',
-          '1 onion',
-          '2 tomatoes',
-          '1 tbsp ginger-garlic paste',
-          '2 tsp garam masala',
-          'Salt to taste',
-          '2 tbsp oil'
-        ],
-        instructions: [
-          'Cook chickpeas until soft.',
-          'Sauté onion, tomatoes, and ginger-garlic paste.',
-          'Add chickpeas, garam masala, and salt.',
-          'Simmer for 20 minutes and serve.'
-        ]
-      },
-      'tomato-bruschetta': {
-        name: 'Tomato Bruschetta',
-        description: 'Italian toasted bread with tomato topping.',
-        image: 'https://media.istockphoto.com/id/1181611076/photo/homemade-italian-bruschetta-on-rustic-wooden-table.jpg?s=1024x1024&w=is&k=20&c=q5VL1-Xp9BwU9_UmNqUb_1jDxzNteKLLkAan4puvM4A=',
-        meal: 'Snack',
-        cookTime: '15 min',
-        servings: 2,
-        ingredients: [
-          '4 slices bread',
-          '2 tomatoes',
-          '1 garlic clove',
-          '2 tbsp olive oil',
-          'Fresh basil',
-          'Salt to taste'
-        ],
-        instructions: [
-          'Toast bread slices until golden.',
-          'Rub with garlic and drizzle with olive oil.',
-          'Top with chopped tomatoes and basil.',
-          'Sprinkle with salt and serve.'
+          'Heat oil and add cumin seeds until they crackle.',
+          'Add onions and sauté until golden.',
+          'Add tomatoes and spices, cook until soft.',
+          'Add potatoes and cauliflower, cover and cook.',
+          'Garnish with fresh cilantro and serve hot.'
         ]
       },
       'quinoa-salad': {
         name: 'Quinoa Salad',
-        description: 'Healthy salad with quinoa and veggies.',
-        image: 'https://media.istockphoto.com/id/638197896/photo/healthy-organic-quinoa-tabouli-salad.jpg?s=1024x1024&w=is&k=20&c=YNtiz2og4gtw50uqRuReCMV8lz8IZyeH2Sq8QFN6BWc=',
-        meal: 'Lunch',
-        cookTime: '20 min',
+        description: 'Healthy and refreshing salad with quinoa and Mediterranean vegetables.',
+        image: 'https://media.istockphoto.com/id/638197896/photo/healthy-organic-quinoa-tabouli-salad.jpg',
+        tags: ['Vegetarian', 'Healthy'],
+        prepTime: '20 mins',
         servings: 2,
+        cost: '₹280',
+        rating: '4.5/5.0',
         ingredients: [
           '1 cup quinoa',
-          '1 cucumber',
-          '1 tomato',
-          '1/4 cup feta',
-          '2 tbsp olive oil',
+          '1 cucumber, diced',
+          '1 tomato, diced',
+          '1/4 cup feta cheese',
+          'Fresh mint leaves',
+          'Olive oil',
           'Lemon juice',
-          'Salt to taste'
+          'Salt and pepper to taste'
         ],
         instructions: [
           'Cook quinoa according to package instructions.',
-          'Chop cucumber and tomato.',
-          'Mix quinoa, veggies, and feta.',
-          'Drizzle with olive oil and lemon juice, season with salt.',
-          'Serve chilled.'
+          'Let quinoa cool to room temperature.',
+          'Mix with diced vegetables and crumbled feta.',
+          'Add chopped mint leaves.',
+          'Dress with olive oil, lemon juice, salt, and pepper.'
+        ]
+      },
+      'mushroom-risotto': {
+        name: 'Mushroom Risotto',
+        description: 'Creamy Italian rice dish with mushrooms and parmesan.',
+        image: 'https://media.istockphoto.com/id/1369183332/photo/risotto-with-brown-champignon-mushrooms.jpg',
+        tags: ['Vegetarian', 'Italian'],
+        prepTime: '40 mins',
+        servings: 4,
+        cost: '₹350',
+        rating: '4.8/5.0',
+        ingredients: [
+          '1.5 cups Arborio rice',
+          '300g mixed mushrooms',
+          '1 onion, finely chopped',
+          '4 cups vegetable broth',
+          '1/2 cup white wine',
+          'Parmesan cheese',
+          'Butter',
+          'Salt and pepper to taste'
+        ],
+        instructions: [
+          'Sauté mushrooms in butter until golden.',
+          'In same pan, cook onions until translucent.',
+          'Add rice and toast for 2 minutes.',
+          'Add wine and let it absorb.',
+          'Gradually add hot broth, stirring constantly.',
+          'Finish with parmesan and butter.'
+        ]
+      },
+      'greek-salad': {
+        name: 'Greek Salad',
+        description: 'Traditional Greek salad with fresh vegetables, olives, and feta cheese.',
+        image: 'https://media.istockphoto.com/id/1461256163/photo/feta-cheese-salad-on-wooden-table.jpg',
+        tags: ['Vegetarian', 'Mediterranean'],
+        prepTime: '15 mins',
+        servings: 2,
+        cost: '₹200',
+        rating: '4.7/5.0',
+        ingredients: [
+          '2 cucumbers, chunked',
+          '4 tomatoes, wedged',
+          '1 red onion, sliced',
+          '200g feta cheese',
+          'Kalamata olives',
+          'Extra virgin olive oil',
+          'Dried oregano',
+          'Salt to taste'
+        ],
+        instructions: [
+          'Combine cucumber, tomatoes, and onion in a bowl.',
+          'Add olives and chunks of feta cheese.',
+          'Drizzle with olive oil.',
+          'Sprinkle dried oregano and salt.',
+          'Toss gently and serve immediately.'
+        ]
+      },
+      'chole-masala': {
+        name: 'Chole Masala',
+        description: 'Spicy Indian chickpea curry cooked with aromatic spices and herbs.',
+        image: 'https://media.istockphoto.com/id/669466116/photo/spicy-chick-peas-curry-or-chola-masala-or-chana-masala-or-chole-bhature-or-choley-garnished.jpg',
+        tags: ['Vegetarian', 'Indian', 'Spicy'],
+        prepTime: '45 mins',
+        servings: 4,
+        cost: '₹180',
+        rating: '4.7/5.0',
+        ingredients: [
+          '2 cups chickpeas (soaked overnight)',
+          '2 onions, finely chopped',
+          '3 tomatoes, pureed',
+          '2 tbsp ginger-garlic paste',
+          '2 tsp chole masala',
+          '1 tsp cumin seeds',
+          '1 tsp turmeric powder',
+          '1 tsp red chili powder',
+          '2 bay leaves',
+          '2 cinnamon sticks',
+          '4 cloves',
+          '2 black cardamom',
+          'Fresh coriander leaves',
+          'Salt to taste',
+          '3 tbsp oil'
+        ],
+        instructions: [
+          'Pressure cook the soaked chickpeas with salt until soft and keep aside.',
+          'Heat oil in a pan, add cumin seeds, bay leaves, cinnamon, cloves, and cardamom.',
+          'Add chopped onions and sauté until golden brown.',
+          'Add ginger-garlic paste and cook until raw smell disappears.',
+          'Add tomato puree and cook until oil separates.',
+          'Add all dry spices and cook for 2-3 minutes.',
+          'Add cooked chickpeas and simmer for 15-20 minutes.',
+          'Garnish with fresh coriander and serve hot with rice or naan.'
+        ]
+      },
+      'tomato-bruschetta': {
+        name: 'Tomato Bruschetta',
+        description: 'Classic Italian appetizer with fresh tomatoes, garlic, and basil on toasted bread.',
+        image: 'https://media.istockphoto.com/id/1181611076/photo/homemade-italian-bruschetta-on-rustic-wooden-table.jpg',
+        tags: ['Vegetarian', 'Italian', 'Appetizer'],
+        prepTime: '20 mins',
+        servings: 6,
+        cost: '₹220',
+        rating: '4.6/5.0',
+        ingredients: [
+          '1 baguette, sliced',
+          '4 ripe tomatoes, diced',
+          '4 cloves garlic, minced',
+          '1/4 cup fresh basil, chopped',
+          '1/4 cup extra virgin olive oil',
+          '2 tbsp balsamic vinegar',
+          'Sea salt and black pepper',
+          'Extra olive oil for brushing'
+        ],
+        instructions: [
+          'Preheat oven to 200°C (400°F).',
+          'Brush bread slices with olive oil and toast until golden brown.',
+          'Rub each toasted slice with a clove of garlic.',
+          'Mix diced tomatoes, minced garlic, and chopped basil in a bowl.',
+          'Add olive oil, balsamic vinegar, salt, and pepper to the mixture.',
+          'Let the mixture sit for 15 minutes to marinate.',
+          'Top each bread slice with the tomato mixture.',
+          'Drizzle with extra olive oil and serve immediately.'
         ]
       }
     };
 
-    // Get recipe from URL parameter
+    // Get recipe ID from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const recipeId = urlParams.get('recipe');
     const recipe = recipes[recipeId];
 
-    if (recipe) {
-      document.getElementById('recipeHeader').innerHTML = `
-        <img src="${recipe.image}" alt="${recipe.name}" class="w-full h-96 object-cover rounded-lg shadow-lg">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-lg"></div>
-        <div class="absolute bottom-4 left-4 text-white">
-          <h1 class="text-4xl md:text-5xl font-bold">${recipe.name}</h1>
-          <p class="text-lg md:text-xl">${recipe.description}</p>
-        </div>
-      `;
+    // Function to load recipe content
+    function loadRecipeContent() {
+      if (!recipe) {
+        window.location.href = 'recipes.html';
+        return;
+      }
 
-      document.getElementById('recipeMetadata').innerHTML = `
-        <div class="flex space-x-6 text-gray-700">
-          <div class="text-center">
-            <span class="block text-sm md:text-base">Meal</span>
-            <span class="block text-lg md:text-xl font-semibold text-green-600">${recipe.meal}</span>
-          </div>
-          <div class="text-center">
-            <span class="block text-sm md:text-base">Cook Time</span>
-            <span class="block text-lg md:text-xl font-semibold text-yellow-600">${recipe.cookTime}</span>
-          </div>
-          <div class="text-center">
-            <span class="block text-sm md:text-base">Servings</span>
-            <span class="block text-lg md:text-xl font-semibold text-green-600">${recipe.servings}</span>
-          </div>
-        </div>
-        <button id="startTimerBtn" class="bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600 transition duration-300 shadow-md">Start Cooking Timer</button>
-      `;
+      // Update recipe title and description
+      document.querySelector('h1 span').textContent = recipe.name;
+      document.querySelector('.text-gray-400').textContent = recipe.description;
 
-      const ingredientsHTML = recipe.ingredients.map((ing, index) => `
-        <li class="flex items-center">
-          <input type="checkbox" id="ing${index + 1}" class="mr-2 accent-green-600">
-          <label for="ing${index + 1}" class="text-base md:text-lg">${ing}</label>
-        </li>
-      `).join('');
-      document.getElementById('ingredientsList').innerHTML = `
-        <h2 class="text-2xl md:text-3xl font-semibold mb-4 text-green-600">Ingredients</h2>
-        <ul class="space-y-2">${ingredientsHTML}</ul>
-      `;
+      // Update recipe image and tags
+      document.querySelector('.recipe-image').src = recipe.image;
+      document.querySelector('.recipe-image').alt = recipe.name;
 
-      const instructionsHTML = recipe.instructions.map((inst, index) => `
-        <li class="flex items-start">
-          <input type="checkbox" id="inst${index + 1}" class="mr-2 mt-1 accent-green-600">
-          <span class="text-base md:text-lg">${inst}</span>
-        </li>
-      `).join('');
-      document.getElementById('instructionsList').innerHTML = `
-        <h2 class="text-2xl md:text-3xl font-semibold mb-4 text-green-600">Instructions</h2>
-        <ol class="space-y-4 list-decimal list-inside">${instructionsHTML}</ol>
-      `;
+      // Update tags
+      const tagsContainer = document.querySelector('.absolute.top-4.right-4');
+      tagsContainer.innerHTML = recipe.tags.map(tag => 
+        `<span class="recipe-tag">${tag}</span>`
+      ).join('');
 
-      const timeParts = recipe.cookTime.match(/(\d+)\s*min/);
-      timeLeft = timeParts ? parseInt(timeParts[1]) * 60 : 30 * 60;
-
-      document.getElementById('startTimerBtn').addEventListener('click', function() {
-        if (!timer) {
-          timer = setInterval(() => {
-            timeLeft--;
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            this.textContent = `Timer: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            if (timeLeft <= 0) {
-              clearInterval(timer);
-              this.textContent = 'Cooking Done!';
-              timer = null;
-            }
-          }, 1000);
+      // Update recipe stats
+      document.querySelectorAll('.recipe-stat').forEach((stat, index) => {
+        const spans = stat.querySelectorAll('span');
+        if (spans.length > 0) {
+          switch(index) {
+            case 0:
+              spans[0].textContent = `Prep: ${recipe.prepTime}`;
+              break;
+            case 1:
+              spans[0].textContent = `Serves: ${recipe.servings}`;
+              break;
+            case 2:
+              spans[0].textContent = `Cost: ${recipe.cost}`;
+              break;
+            case 3:
+              spans[0].textContent = recipe.rating;
+              break;
+          }
         }
       });
-    } else {
-      document.getElementById('recipeHeader').innerHTML = '<h1 class="text-4xl md:text-5xl font-bold text-center text-red-600">Recipe Not Found</h1>';
+
+      // Update ingredients
+      const ingredientsList = document.querySelector('.space-y-4');
+      ingredientsList.innerHTML = recipe.ingredients.map(ingredient => `
+        <li class="ingredient-item p-4 rounded-lg flex items-start gap-3">
+          <input type="checkbox" class="mt-1">
+          <span>${ingredient}</span>
+        </li>
+      `).join('');
+
+      // Update instructions
+      const instructionsList = document.querySelector('.space-y-6');
+      instructionsList.innerHTML = recipe.instructions.map((instruction, index) => `
+        <div class="step-card p-6 rounded-lg">
+          <div class="flex items-start gap-4">
+            <span class="step-number text-4xl font-bold">${index + 1}</span>
+            <p class="text-gray-300">${instruction}</p>
+          </div>
+        </div>
+      `).join('');
+
+      // Reinitialize ingredient checklist functionality
+      document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          const listItem = this.closest('.ingredient-item');
+          if (this.checked) {
+            listItem.style.opacity = '0.5';
+          } else {
+            listItem.style.opacity = '1';
+          }
+        });
+      });
     }
 
     // Favorites functionality
     const favoriteBtn = document.getElementById('favoriteBtn');
-    const favoriteIcon = document.getElementById('favoriteIcon');
-    const favoriteText = document.getElementById('favoriteText');
+    const favoriteBtnIcon = favoriteBtn.querySelector('svg');
+    const favoriteBtnText = favoriteBtn.querySelector('span');
 
-    function updateFavoriteButton() {
-      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-      const isFavorited = favorites.includes(recipeId);
-      favoriteIcon.setAttribute('fill', isFavorited ? 'currentColor' : 'none');
-      favoriteText.textContent = isFavorited ? 'Remove from Favorites' : 'Add to Favorites';
+    // Function to save recipe details to favorites
+    function saveRecipeToFavorites(recipeId) {
+      try {
+        let favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '{}');
+        favorites[recipeId] = {
+          id: recipeId,
+          name: recipe.name,
+          image: recipe.image,
+          description: recipe.description,
+          tags: recipe.tags,
+          timestamp: new Date().toISOString()
+        };
+        localStorage.setItem('favoriteRecipes', JSON.stringify(favorites));
+      } catch (error) {
+        console.error('Error saving recipe to favorites:', error);
+      }
     }
 
-    if (recipeId && recipe) {
-      updateFavoriteButton();
-      favoriteBtn.addEventListener('click', function() {
-        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        if (favorites.includes(recipeId)) {
-          favorites = favorites.filter(id => id !== recipeId);
+    // Function to remove recipe from favorites
+    function removeRecipeFromFavorites(recipeId) {
+      try {
+        let favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '{}');
+        delete favorites[recipeId];
+        localStorage.setItem('favoriteRecipes', JSON.stringify(favorites));
+      } catch (error) {
+        console.error('Error removing recipe from favorites:', error);
+      }
+    }
+
+    // Function to update favorite button appearance
+    function updateFavoriteButton(isFavorited) {
+      favoriteBtnIcon.setAttribute('fill', isFavorited ? 'currentColor' : 'none');
+      favoriteBtnText.textContent = isFavorited ? 'Remove from Favorites' : 'Add to Favorites';
+      favoriteBtn.classList.toggle('bg-red-500', isFavorited);
+    }
+
+    // Function to check if recipe is in favorites
+    function isRecipeFavorited() {
+      try {
+        const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '{}');
+        return !!favorites[recipeId];
+      } catch (error) {
+        console.error('Error checking favorites:', error);
+        return false;
+      }
+    }
+
+    // Function to toggle favorite status
+    function toggleFavorite() {
+      try {
+        const isFavorited = isRecipeFavorited();
+        
+        if (isFavorited) {
+          removeRecipeFromFavorites(recipeId);
+          showNotification('Recipe removed from favorites');
         } else {
-          favorites.push(recipeId);
+          saveRecipeToFavorites(recipeId);
+          showNotification('Recipe added to favorites');
         }
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        updateFavoriteButton();
-      });
+        
+        updateFavoriteButton(!isFavorited);
+      } catch (error) {
+        console.error('Error updating favorites:', error);
+        showNotification('Error updating favorites', true);
+      }
     }
+
+    // Function to show notification
+    function showNotification(message, isError = false) {
+      const notification = document.createElement('div');
+      notification.className = `fixed top-4 right-4 p-4 rounded-lg text-white ${
+        isError ? 'bg-red-500' : 'bg-green-500'
+      } shadow-lg transform transition-all duration-300 translate-y-0 opacity-100 z-50`;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+
+      // Animate out
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(-20px)';
+        setTimeout(() => notification.remove(), 300);
+      }, 2000);
+    }
+
+    // Share button functionality with enhanced features
+    const shareBtn = document.getElementById('shareBtn');
+    shareBtn.addEventListener('click', async () => {
+      try {
+        // Create share data
+        const shareData = {
+          title: recipe.name,
+          text: `Check out this delicious ${recipe.name} recipe on Food Delight!\n\n${recipe.description}`,
+          url: window.location.href
+        };
+
+        if (navigator.share) {
+          // Use native share if available
+          await navigator.share(shareData);
+          showNotification('Recipe shared successfully');
+        } else {
+          // Fallback to clipboard
+          const shareText = `${shareData.title}\n\n${shareData.text}\n\n${shareData.url}`;
+          await navigator.clipboard.writeText(shareText);
+          showNotification('Recipe link copied to clipboard!');
+        }
+      } catch (error) {
+        console.error('Error sharing:', error);
+        if (error.name === 'AbortError') {
+          // User cancelled sharing
+          return;
+        }
+        showNotification('Error sharing recipe', true);
+      }
+    });
+
+    // Initialize the page
+    if (recipeId && recipe) {
+      loadRecipeContent();
+      // Initialize favorite button state
+      updateFavoriteButton(isRecipeFavorited());
+      // Add click handler for favorite button
+      favoriteBtn.addEventListener('click', toggleFavorite);
+    } else {
+      window.location.href = 'recipes.html';
+    }
+
+    // Track ingredient checklist
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const listItem = this.closest('.ingredient-item');
+        if (this.checked) {
+          listItem.style.opacity = '0.5';
+          showNotification('Ingredient checked off your list');
+        } else {
+          listItem.style.opacity = '1';
+        }
+      });
+    });
   </script>
+
+  <!-- Add notification styles -->
+  <style>
+    @keyframes slideIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .notification {
+      animation: slideIn 0.3s ease-out;
+    }
+  </style>
 </body>
 </html>

@@ -44,50 +44,153 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Food Delight - Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+    }
+    .navbar {
+      background: rgba(26, 26, 26, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .nav-link {
+      position: relative;
+      padding: 0.5rem 0;
+      margin: 0 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(to right, #e65c00, #f9d423);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-brand {
+      position: relative;
+      font-weight: 600;
+      background: linear-gradient(to right, #fff, #f9d423);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transition: all 0.3s ease;
+    }
+    .nav-brand:hover {
+      transform: translateY(-1px);
+      text-shadow: 0 10px 20px rgba(249, 212, 35, 0.2);
+    }
+    .search-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+    .search-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .form-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .form-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+    .form-input:focus {
+      border-color: #f9d423;
+      box-shadow: 0 0 0 2px rgba(249, 212, 35, 0.2);
+    }
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .submit-btn {
+      background: linear-gradient(to right, #e65c00, #f9d423);
+      transition: all 0.3s ease;
+    }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(230, 92, 0, 0.3);
+    }
+    .footer {
+      background: rgba(26, 26, 26, 0.95);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+  </style>
   <script src="login.js" defer></script>
 </head>
-<body class="bg-cream font-sans">
+<body class="min-h-screen flex flex-col">
   <!-- Navbar -->
-  <nav class="navbar text-white p-4 sticky top-0 z-10 bg-green-700">
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-3xl font-bold">Food Delight</a>
-      <div class="space-x-6">
-        <a href="index.html" class="hover:underline">Home</a>
-        <a href="recipes.html" class="hover:underline">Recipes</a>
-        <a href="favorites.html" class="hover:underline">Favorites</a>
-        <a href="login.html" class="hover:underline">Login</a>
-        <a href="signup.html" class="hover:underline">Signup</a>
+  <nav class="navbar text-white p-4 sticky top-0 z-10">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <a href="index.html" class="nav-brand text-2xl">Food Delight</a>
+      <div class="flex items-center space-x-2">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="recipes.html" class="nav-link">Recipes</a>
+        <a href="favorites.html" class="nav-link">Favorites</a>
+        <div class="h-4 w-px bg-gradient-to-b from-transparent via-gray-400 to-transparent mx-4"></div>
+        <a href="login.html" class="nav-link active">Login</a>
+        <a href="signup.html" class="px-6 py-2 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full text-sm font-medium hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300 hover:-translate-y-0.5">Sign Up</a>
+        <div class="relative ml-6">
+          <input type="text" id="searchInput" placeholder="Search recipes..." 
+            class="search-input pl-10 pr-4 py-2.5 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-400 w-48 md:w-56">
+          <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <button onclick="searchRecipes()" 
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-orange-400 hover:text-orange-300 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
 
   <!-- Login Section -->
-  <section class="py-16">
+  <section class="py-16 flex-grow">
     <div class="container mx-auto px-4">
-      <h2 class="text-4xl font-bold text-center mb-12 text-green-700">Login</h2>
-      <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-        <div id="error" class="hidden text-red-600 mb-4 text-center"></div>
+      <h2 class="text-4xl font-bold text-center mb-12">
+        <span class="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">Welcome Back</span>
+      </h2>
+      <div class="max-w-md mx-auto form-container p-8 rounded-xl">
+        <div id="error" class="hidden text-red-500 mb-4 text-center"></div>
         <form id="loginForm">
           <div class="mb-4">
-            <label for="email" class="block text-gray-700 mb-2">Email</label>
-            <input type="email" id="email" name="email" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600" required>
+            <label for="email" class="block text-gray-300 mb-2">Email</label>
+            <input type="email" id="email" name="email" class="form-input w-full p-3 rounded-lg focus:outline-none" required>
           </div>
           <div class="mb-6">
-            <label for="password" class="block text-gray-700 mb-2">Password</label>
-            <input type="password" id="password" name="password" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600" required>
+            <label for="password" class="block text-gray-300 mb-2">Password</label>
+            <input type="password" id="password" name="password" class="form-input w-full p-3 rounded-lg focus:outline-none" required>
           </div>
-          <button type="submit" class="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition duration-300">Login</button>
+          <button type="submit" class="submit-btn w-full text-white p-3 rounded-lg transition duration-300">Login</button>
         </form>
-        <p class="mt-4 text-center text-gray-600">Don't have an account? <a href="signup.html" class="text-green-600 hover:underline">Sign up</a></p>
+        <p class="mt-4 text-center text-gray-400">Don't have an account? <a href="signup.html" class="text-orange-400 hover:text-orange-300">Sign up</a></p>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="footer py-8 bg-green-700 text-white">
+  <footer class="footer py-8">
     <div class="container mx-auto text-center">
-      <p>© 2025 Food Delight. All rights reserved.</p>
+      <p class="text-gray-400">© 2025 Food Delight. All rights reserved.</p>
     </div>
   </footer>
 </body>
